@@ -16,7 +16,6 @@ The code logs in to Twitter, takes Amit Segal's last 100 tweets and provides the
 6. **hashScraper(post)** - this function gets a tweet element from the HTML code, looks for all the hashtags (@somehashtag) and count them. The function creates the countHash.txt file and prints the counting results in it.
 7. main() - this functions opens the browser and calls Amit Segal's Twitter page. Then, it calls 100 times in a loop to the above functions and they create the required files.
 
-
 **Run the code:**
 In order to run the code- download the TwitterScraper.zip to your computer and read the README.md file (😜).
 Open the code in your IDE and make sure you have a Selenium installed in your pc, otherwise, use the "pip install selenium" command.
