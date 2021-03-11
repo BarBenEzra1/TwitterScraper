@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 import time
 from random import randint
+import os
+import sys
 
 
 def infiniteScroll(browser): #infinite scrolling down- eact time that gets to the end
@@ -96,7 +98,8 @@ def tweetScraper(post, tweetsDoc, count):
 
 
 def main():
-    browser = webdriver.Chrome('/Users/barbenezra/Downloads/chromedriver 4')
+    webDriverFile = os.path.join(sys.path[0], 'chromedriver')
+    browser = webdriver.Chrome(webDriverFile)
     browser.get("https://twitter.com/amit_segal")
     browser.maximize_window()
     browser.implicitly_wait(20)
