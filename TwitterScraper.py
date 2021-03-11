@@ -27,7 +27,7 @@ def infiniteScroll(browser): #infinite scrolling down- eact time that gets to th
 def countWords():
     words = []
     wordsDict = {}
-    tweetsDoc = open("tweetsAmit.txt", "r")
+    tweetsDoc = open("tweets.txt", "r")
     lines = tweetsDoc.readlines()
     for line in lines[1:]:
         if line.startswith("tweet number"):
@@ -48,11 +48,11 @@ def countWords():
         countWordDoc.write(word + " : " + str(wordsDict[word]) + "\n")
 
 
-def tagsScraper(post):
+def tagsScraper(post, user):
     postedName = post.find_element_by_xpath('.//span[contains(text(), "@")]').text #by analyzing the HTML file- looking for the name of the publishe
-    section = post.find_elements_by_xpath('./div[2]/div[2]/div[1]//div')
+    section = post.find_elements_by_xpath('./div[2]/div[2]/div[1]//div[contains(text(), "@")]')
     for t in section:
-        if t.text[0]=='@' and postedName == "@amit_segal":
+        if t.text[0]=='@' and postedName == user:
             print(t.text)
     # tagsDict = {}
     # for tag in tags:
@@ -66,12 +66,12 @@ def tagsScraper(post):
     #     countTagsDoc.write(t.text + " : " + str(tagsDict[t]) + "\n")
 
 
-def hashScraper(post):
+def hashScraper(post, user):
     postedName = post.find_element_by_xpath('.//span[contains(text(), "@")]').text #by analyzing the HTML file- looking for the name of the publishe
     section = post.find_elements_by_xpath('./div[2]/div[2]/div[1]//div')
     if section is not None:
         for h in section:
-            if h.text[0]=='#'and postedName == "@amit_segal":
+            if h.text[0]=='#'and postedName == user:
                 print(h.text)
     #hashtags = section.find_elements_by_partial_link_text('#')
     # hashDict = {}
@@ -85,37 +85,39 @@ def hashScraper(post):
     #     countHashDoc.write(h + " : " + str(hashDict[h]) + "\n")
 
 
-def tweetScraper(post, tweetsDoc, count):
+def tweetScraper(post, tweetsDoc, count, user):
     postedName = post.find_element_by_xpath('.//span[contains(text(), "@")]').text #by analyzing the HTML file- looking for the name of the publisher
-    if postedName == "@amit_segal":
+    if postedName == user:
         try: 
             tweet = post.find_element_by_xpath('./div[2]/div[2]/div[1]//span').text #text of tweet
         except NoSuchElementException:
-            tweetsDoc.write("tweet number " + str(count) + ": " + "NO TEXT IN THE TWEET" + "\n")
+            tweetsDoc.write("tweet number " + str(count) + ": " + "NO TEXT IN THE TWEET." + "\n")
             return 
         tweetsDoc.write("tweet number " + str(count) + ":" + "\n" + tweet + "\n")
 
 
-def main():
+def main(url):
     webDriverFile = os.path.join(sys.path[0], 'chromedriver')
     os.chmod(webDriverFile, 755)
     browser = webdriver.Chrome(executable_path = webDriverFile)
-    browser.get("https://twitter.com/amit_segal")
+    browser.get(url)
     browser.maximize_window()
     browser.implicitly_wait(20)
+    name = url[20:]
+    user = '@' + name
 
-    tweetsDoc = open("tweetsAmit.txt", "a+")
-    tweetsDoc.write("Last 100 tweets of Amit Segal: \n")
+    tweetsDoc = open("tweets.txt", "a+")
+    tweetsDoc.write("Last 100 tweets of {}: \n".format(user))
     count = 0
     
     while count <= 100:
         tweets = browser.find_elements_by_xpath('//div[@data-testid="tweet"]') #gather the tweets in Amit Segal's page
         for post in tweets:
-            tagsScraper(post)
+            tagsScraper(post, user)
             browser.implicitly_wait(2)
-            hashScraper(post)
+            hashScraper(post, user)
             browser.implicitly_wait(2)
-            tweetScraper(post, tweetsDoc, count)
+            tweetScraper(post, tweetsDoc, count, user)
             count += 1
             if count > 100:
                 break
@@ -123,4 +125,4 @@ def main():
 
     countWords()
 
-main()
+main("https://twitter.com/amit_segal")
