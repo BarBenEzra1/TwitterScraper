@@ -13,4 +13,3 @@ Code guidelines:
 2.	Your methods and variables should have meaningful names. 
 3.	Write Readme.md that describe your project + explain how to run it
 4.	You can write it in any programming language 
-![image](https://user-images.githubusercontent.com/75648208/110722535-1e5be980-821b-11eb-90c0-c1a57074fa10.png)
