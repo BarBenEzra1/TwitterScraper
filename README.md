@@ -8,7 +8,7 @@ The code logs in to Twitter, takes Amit Segal's last 100 tweets and provides the
 3. **Word statistics** - countWords.txt file
 4. Bonus: write tests
 
-The functions in the code:
+**The functions in the code:**
 1. **infiniteScroll(browser)** - this function gets the open browser as a parameter and scroll it down. The scrolling lasts till the main function runs over 100      tweets.
 2. **tweetScraper(post, tweetsDoc, count)** - this function gets a tweet element from the HTML code, the tweetDoc (which is weetsAmit.txt file that was opened in the main) and the count variable (used for the printing). The function extract the text part from the tweet element and prints it in the weetsAmit.txt file.
 4. **tagsScraper(post)** - this function gets a tweet element from the HTML code, looks for all the mentions (@somename) and count them. The function creates the countTags.txt file and prints the counting results in it.
