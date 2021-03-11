@@ -96,10 +96,10 @@ def tweetScraper(post, tweetsDoc, count):
         tweetsDoc.write("tweet number " + str(count) + ":" + "\n" + tweet + "\n")
 
 
-
 def main():
     webDriverFile = os.path.join(sys.path[0], 'chromedriver')
-    browser = webdriver.Chrome(webDriverFile)
+    os.chmod(webDriverFile, 755)
+    browser = webdriver.Chrome(executable_path = webDriverFile)
     browser.get("https://twitter.com/amit_segal")
     browser.maximize_window()
     browser.implicitly_wait(20)
