@@ -10,7 +10,7 @@ import os
 import sys
 
 
-def infiniteScroll(browser): #infinite scrolling down- eact time that gets to the end
+def scroll(browser): #infinite scrolling down- eact time that gets to the end
     try_to_scroll = 0
     last_pos = browser.execute_script("return window.pageYOffset;")
     i = 0
@@ -31,7 +31,7 @@ def infiniteScroll(browser): #infinite scrolling down- eact time that gets to th
     return True
 
 
-def countWords():
+def count_words():
     words = []
     words_dict = {}
     tweets_doc = open("tweets.txt", "r")
@@ -50,35 +50,35 @@ def countWords():
             words_dict[word] += 1
         else:
             words_dict[word] = 1
-    countWordDoc = open("countWords.txt", "a")
+    count_word_doc = open("countWords.txt", "a")
     for word in words_dict:
-        countWordDoc.write(word + " : " + str(words_dict[word]) + "\n")
+        count_word_doc.write(word + " : " + str(words_dict[word]) + "\n")
 
 
-def tagsScraper(tagsDict, post, user, browser, postedName, countTagsDoc):
+def tags_scraper(tags_dict, post, user, browser, posted_name, count_tags_doc):
     section = post.find_elements_by_css_selector('*[class = "r-18u37iz"]')
     browser.implicitly_wait(2)
     for t in section:
-        if t.text[0]=='@' and postedName == user:
-            if t.text in tagsDict:
-                tagsDict[t.text] += 1
+        if t.text[0]=='@' and posted_name == user:
+            if t.text in tags_dict:
+                tags_dict[t.text] += 1
             else:
-                tagsDict[t.text] = 1
+                tags_dict[t.text] = 1
 
 
-def hashScraper(hashDict, post, user, browser, postedName, countHashDoc):
+def hash_scraper(hash_dict, post, user, browser, posted_name, count_hash_doc):
     section = post.find_elements_by_css_selector('*[class = "r-18u37iz"]')
     browser.implicitly_wait(2)
     if section is not None:
         for h in section:
-            if h.text[0]=='#'and postedName == user:
-                if h.text in hashDict:
-                    hashDict[h.text] += 1
+            if h.text[0]=='#'and posted_name == user:
+                if h.text in hash_dict:
+                    hash_dict[h.text] += 1
                 else:
-                    hashDict[h.text] = 1
+                    hash_dict[h.text] = 1
 
 
-def tweetScraper(id_tweets, post, tweets_doc, count):
+def tweet_scraper(id_tweets, post, tweets_doc, count):
     try: 
         tweet = post.find_element_by_xpath('./div[2]/div[2]/div[1]//span').text #text of tweet
     except NoSuchElementException:
@@ -101,32 +101,30 @@ def main(url):
 
     tweets_doc = open("tweets.txt", "a+")
     tweets_doc.write("Last 100 tweets of {}: \n".format(user))
-    countTagsDoc = open("countTags.txt", "a+")
-    countHashDoc = open("countHash.txt", "a+")
+    count_tags_doc = open("countTags.txt", "a+")
+    count_hash_doc = open("countHash.txt", "a+")
     count = 1
     scrolling = True #can scroll
     id_tweets = set()
-    tagsDict = {}
-    hashDict = {}
+    tags_dict = {}
+    hash_dict = {}
 
     while count <= 100 and scrolling:
         tweets = browser.find_elements_by_xpath('//div[@data-testid="tweet"]') #gather the tweets in Amit Segal's page
         for post in tweets[-10:]:
-            postedName = post.find_element_by_xpath('.//span[contains(text(), "@")]').text #by analyzing the HTML file- looking for the name of the publisher
-            if postedName == user:
-                tweetScraper(id_tweets, post, tweets_doc, count)
+            posted_name = post.find_element_by_xpath('.//span[contains(text(), "@")]').text #by analyzing the HTML file- looking for the name of the publisher
+            if posted_name == user:
+                tweet_scraper(id_tweets, post, tweets_doc, count)
                 count += 1
-            tagsScraper(tagsDict, post, user, browser, postedName, countTagsDoc)
+            tags_scraper(tags_dict, post, user, browser, posted_name, count_tags_doc)
             browser.implicitly_wait(2)
-            hashScraper(hashDict, post, user, browser, postedName, countHashDoc)
+            hash_scraper(hash_dict, post, user, browser, posted_name, count_hash_doc)
             if count > 100:
                 break
-        scrolling = infiniteScroll(browser)
+        scrolling = scroll(browser)
     
-    for tag in tagsDict:
-        countTagsDoc.write(tag + " : " + str(tagsDict[tag]) + "\n")
-    for hashtag in hashDict:
-        countHashDoc.write(hashtag + " : " + str(hashDict[hashtag]) + "\n")
-    countWords()
-
-main("https://twitter.com/amit_segal")
+    for tag in tags_dict:
+        count_tags_doc.write(tag + " : " + str(tags_dict[tag]) + "\n")
+    for hashtag in hash_dict:
+        count_hash_doc.write(hashtag + " : " + str(hash_dict[hashtag]) + "\n")
+    count_words()
