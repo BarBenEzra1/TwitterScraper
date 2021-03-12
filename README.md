@@ -6,7 +6,6 @@ The code logs in to Twitter, takes Amit Segal's last 100 tweets and provides the
 1. **Hashtag list**- countHash.txt file
 2. **Mention list**- countTags.txt file
 3. **Word statistics** - countWords.txt file
-4. Bonus: write tests
 
 **The functions in the code:**
 1. **scroll(browser)** - this function gets the open browser as a parameter and scroll it down. The browser will try at most 3 times in case it's fails to scroll (might happen if the page wasn't loaded yet, the new and last positions are the same). The scrolling lasts till the main function runs over 100 tweets.
