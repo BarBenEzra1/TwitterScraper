@@ -50,7 +50,7 @@ def count_words():
             words_dict[word] += 1
         else:
             words_dict[word] = 1
-    count_word_doc = open("countWords.txt", "a")
+    count_word_doc = open("count_words.txt", "a")
     for word in words_dict:
         count_word_doc.write(word + " : " + str(words_dict[word]) + "\n")
 
@@ -91,7 +91,7 @@ def tweet_scraper(id_tweets, post, tweets_doc, count):
 
 def main(url):
     webDriverFile = os.path.join(sys.path[0], 'chromedriver')
-    os.chmod(webDriverFile, 755)
+    os.chmod(webDriverFile, 755) #permissions
     browser = webdriver.Chrome(executable_path = webDriverFile)
     browser.get(url)
     browser.maximize_window()
@@ -101,8 +101,8 @@ def main(url):
 
     tweets_doc = open("tweets.txt", "a+")
     tweets_doc.write("Last 100 tweets of {}: \n".format(user))
-    count_tags_doc = open("countTags.txt", "a+")
-    count_hash_doc = open("countHash.txt", "a+")
+    count_tags_doc = open("count_tags.txt", "a+")
+    count_hash_doc = open("count_hash.txt", "a+")
     count = 1
     scrolling = True #can scroll
     id_tweets = set()
@@ -128,3 +128,7 @@ def main(url):
     for hashtag in hash_dict:
         count_hash_doc.write(hashtag + " : " + str(hash_dict[hashtag]) + "\n")
     count_words()
+
+if __name__ == '__main__':
+    url = "https://twitter.com/amit_segal"
+    main(url)
