@@ -19,4 +19,5 @@ The code logs in to Twitter, takes Amit Segal's last 100 tweets and provides the
 **Run the code:**
 In order to run the code- download the TwitterScraper.zip to your computer and read the README.md file (😜).
 Open the code in your IDE and make sure you have a Selenium installed in your pc, otherwise, use the "pip install selenium" command.
-Now, run the code and wait (!) for the Chrome browser that has been opened at the beginning to get closed. Selenium basically sends queries to the HTTP server for each selenium command and interupting the process, such as, changing the URL of the Chrome browser or scroll the page by yourself (etc.) may cause errors.
+Now, run the code and wait (!) for the Chrome browser that has been opened at the beginning to get closed. Selenium basically sends queries to the HTTP server for each Selenium command and interupting the process, such as, changing the URL of the Chrome browser or scroll the page by yourself (etc.) may cause errors.
+The running process might take approximately 5 minutes since waiting for the HTTP server to send its answer takes time. 
